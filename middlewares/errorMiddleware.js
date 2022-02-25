@@ -1,6 +1,6 @@
-const errorMiddleware = (err, _req, res, _next) => {
-  if (err.status) return res.status(err.status).json(err.message);
-  return res.status(500).json({ message: err.message });
+const errorMiddleware = (error, _req, res, _next) => {
+  if (error.status) return res.status(error.status).json({ messegae: error.message });
+  return res.status(500).json({ message: error.message });
 };
 
 module.exports = errorMiddleware;
