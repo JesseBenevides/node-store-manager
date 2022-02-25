@@ -8,4 +8,9 @@ salesRouter.get(
   salesController.getAll,
 );
 
+salesRouter.get(
+  '/:id',
+  salesController.findById,
+);
+
 module.exports = salesRouter;
