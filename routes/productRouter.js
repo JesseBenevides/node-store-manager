@@ -5,7 +5,7 @@ const productRouter = express.Router();
 
 productRouter.get(
   '/',
-  productController.getProducts,
+  productController.getAll,
 );
 
 module.exports = productRouter;

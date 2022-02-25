@@ -1,8 +1,8 @@
 const productService = require('../services/productService');
 
-const getProducts = async (req, res, next) => {
+const getAll = async (req, res, next) => {
   try {
-    const producs = await productService.getProducts();
+    const producs = await productService.getAll();
     return res.status(200).json(producs);
   } catch (error) {
     next(error);
@@ -10,5 +10,5 @@ const getProducts = async (req, res, next) => {
 };
 
 module.exports = {
-  getProducts,
+  getAll,
 };
