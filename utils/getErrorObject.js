@@ -1,6 +1,6 @@
 const getErrorObj = (joiMessage) => {
-  const [status, message] = joiMessage.message.split('|');
-  const errorObj = { status, message };
+  const [message, status] = joiMessage.message.split('|');
+  const errorObj = { message, status };
   return errorObj;
 };
 
