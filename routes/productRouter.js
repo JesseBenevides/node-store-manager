@@ -17,6 +17,7 @@ productRouter.get(
 productRouter.post(
   '/',
   productValidation,
+  productController.create,
 );
 
 module.exports = productRouter;
