@@ -3,14 +3,14 @@ const Joi = require('joi');
 const salesSchema = Joi.object({
   productId: Joi.required()
     .messages({
-      'any.required': '400|"productId" is required',
+      'any.required': '"productId" is required|400',
     }),
   quantity: Joi.number().integer().positive().required()
     .messages({
-      'any.required': '400|"quantity" is required',
-      'number.integer': '422|"quantity" must be greater than or equal to 1',
-      'number.positive': '422|"quantity" must be greater than or equal to 1',
-      'number.base': '422|"quantity" must be a number',
+      'any.required': '"quantity" is required|400',
+      'number.integer': '"quantity" must be greater than or equal to 1|422',
+      'number.positive': '"quantity" must be greater than or equal to 1|422',
+      'number.base': '"quantity" must be a number|422',
     }),
 });
 
