@@ -1,7 +1,7 @@
 const salesSchema = require('../schemas/salesSchema');
 const getErrorObj = require('../utils/getErrorObject');
 
-const salesValidation = (req, res, _next) => {
+const salesValidation = (req, _res, next) => {
   req.body.map((sale) => {
     const { error } = salesSchema.validate(sale);
     if (error) {
@@ -11,7 +11,7 @@ const salesValidation = (req, res, _next) => {
     return 0;
   });
   
-  return res.status(200).json({ message: 'Validado com sucesso' });
+  next();
 };
 
 module.exports = salesValidation;
