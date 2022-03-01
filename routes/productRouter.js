@@ -20,4 +20,10 @@ productRouter.post(
   productController.create,
 );
 
+productRouter.put(
+  '/:id',
+  productValidation,
+  productController.update,
+);
+
 module.exports = productRouter;
