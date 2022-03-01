@@ -26,7 +26,7 @@ const create = async (name, quantity) => {
 
 const update = async ({ name, quantity, id }) => {
   const product = await productModel.findById(id);
-  console.log(product);
+
   if (product.length === 0) {
     return { status: 404, message: 'Product not found' };
   }
@@ -36,9 +36,21 @@ const update = async ({ name, quantity, id }) => {
   return { status: 200, data: { name, quantity, id } };
 };
 
+const exclude = async (id) => {
+  const product = await productModel.findById(id);
+
+  if (product.length === 0) {
+    return { status: 404, message: 'Product not found' };
+  }
+
+  await productModel.exclude(id);
+  return { status: 204, data: true };
+};
+
 module.exports = {
   getAll,
   findById,
   create,
   update,
+  exclude,
 };
