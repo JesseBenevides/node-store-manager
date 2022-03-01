@@ -31,8 +31,7 @@ const update = async ({ name, quantity, id }) => {
     return { status: 404, message: 'Product not found' };
   }
 
-  const result = await productModel.update({ name, quantity, id });
-  console.log(result);
+  await productModel.update({ name, quantity, id });
 
   return { status: 200, data: { name, quantity, id } };
 };
