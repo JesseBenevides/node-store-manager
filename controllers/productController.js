@@ -52,9 +52,24 @@ const update = async (req, res, next) => {
   }
 };
 
+const exclude = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await productService.exclude(id);
+    
+    if (result.data) {
+      return res.status(result.status).end();
+    }
+    next(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAll,
   findById,
   create,
   update,
+  exclude,
 };
