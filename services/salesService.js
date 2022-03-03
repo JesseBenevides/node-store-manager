@@ -15,7 +15,16 @@ const findById = async (id) => {
   return { status: 200, data: sales };
 };
 
+const create = async (newSales) => {
+  const sale = await salesModel.create(newSales);
+  return (sale 
+    ? { status: 201, data: sale }
+    : { status: 500, message: 'Somethig went wrong' }
+  );
+};
+
 module.exports = {
   getAll,
   findById,
+  create,
 };
