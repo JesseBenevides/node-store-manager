@@ -17,6 +17,7 @@ salesRouter.get(
 salesRouter.post(
   '/',
   salesValidation,
+  salesController.create,
 );
 
 module.exports = salesRouter;
