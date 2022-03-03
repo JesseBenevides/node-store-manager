@@ -17,7 +17,7 @@ const findById = async (id) => {
     SELECT s.date, s_p.product_id, s_p.quantity
     FROM StoreManager.sales AS s
     INNER JOIN StoreManager.sales_products AS s_p
-    ON s.id = s_p.product_id
+    ON s.id = s_p.sale_id
     WHERE s_p.sale_id = ?;`;
 
   const [sale] = await connection.execute(query, [id]);
@@ -32,24 +32,45 @@ const createSale = async () => {
   return result.insertId;
 };
 
-const create = async (newSales) => {
-  const saleId = await createSale();
-
+const createItems = async (saleId, itemList) => {
   if (!saleId) return null;
-  
-  const salesListQuery = `
+
+  const query = `
     INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity)
     VALUES (?, ?, ?);`;
 
-  newSales.forEach(async (sale) => {
-    await connection.execute(salesListQuery, [saleId, sale.productId, sale.quantity]);
+  itemList.forEach(async (sale) => {
+    await connection.execute(query, [saleId, sale.productId, sale.quantity]);
   });
 
-  return { id: saleId, itemsSold: newSales };
+  return { id: saleId, itemsSold: itemList };
+};
+
+const excludeItems = async (saleId) => {
+  const query = 'DELETE FROM StoreManager.sales_products WHERE sale_id=?;';
+  const [result] = await connection.execute(query, [saleId]);
+  return (!!result.affectedRows);
+};
+
+const exclude = async (saleId) => {
+  await excludeItems(saleId);
+
+  const query = 'DELETE FROM StoreManager.sales WHERE id=?';
+  const [result] = await connection.execute(query, [saleId]);
+  return (!!result.affectedRows);
+};
+
+const update = async (saleId, itemList) => {
+  await excludeItems(saleId);
+  const { id, itemsSold } = await createItems(saleId, itemList);
+  return { saleId: id, itemUpdated: itemsSold };
 };
 
 module.exports = {
   getAll,
   findById,
-  create,
+  createItems,
+  createSale,
+  update,
+  exclude,
 };
