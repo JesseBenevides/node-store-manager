@@ -20,4 +20,15 @@ salesRouter.post(
   salesController.create,
 );
 
+salesRouter.put(
+  '/:id',
+  salesValidation,
+  salesController.update,
+);
+
+salesRouter.delete(
+  '/:id',
+  salesController.exclude,
+);
+
 module.exports = salesRouter;
