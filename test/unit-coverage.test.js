@@ -18,6 +18,7 @@ const executeTests = async () => {
   try {
     await exec(NPX_NYC_COMMAND)
   } catch (error) {
+    console.log(error);
     throw 'Algum dos seus testes falhou, esse requisito só será avaliado se todos os testes passarem';
   }
 };
