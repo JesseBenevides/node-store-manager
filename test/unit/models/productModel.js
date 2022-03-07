@@ -4,7 +4,7 @@ const sinon = require('sinon');
 const productModel = require('../../../models/productModel');
 const connection = require('../../../models/connection');
 
-describe('Product Models', () => {
+describe.skip('Product Models', () => {
   describe('GetAll - Busca todos os produtos do banco', () => {
     describe('Quando não há produtos cadastrados', () => {
       before(() => {
