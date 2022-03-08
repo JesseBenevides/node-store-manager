@@ -286,4 +286,53 @@ describe('Product Models', () => {
       });
     });
   });
+
+  describe('Exclude - Deleta um produto do banco', () => {
+    const id = 1;
+    describe('Quando não é possível deletar um produto', () => {
+      before(() => {
+        const result = [{ affectedRows: 0 }];
+        sinon.stub(connection, 'execute');
+      });
+      after(() => {
+        connection.execute.restore();
+      });
+
+      it('Retorna um objeto', async () => {
+        const result = await productModel.exclude(id);
+        expect(result).to.be.an('object');
+      });
+      it('O objeto possui as propriedades certas', async () => {
+        const result = await productModel.exclude(id);
+        expect(result).to.include.all.keys('affectedRows');
+      });
+      it('As propriedade "affectedRows" possui valor 0', async () => {
+        const { affectedRows } = await productModel.exclude(id);
+        expect(affectedRows).to.be.equal(0);
+      });
+    });
+
+    describe('Quando o produto é deletado com sucesso', () => {
+      before(() => {
+        const result = [{ affectedRows: 1 }];
+        sinon.stub(connection, 'execute').resolves(result);
+      });
+      after(() => {
+        connection.execute.restore();
+      });
+
+      it('Retorna um objeto', async () => {
+        const result = await productModel.exclude(id);
+        expect(result).to.be.an('object');
+      });
+      it('O objeto possui as propriedades certas', async () => {
+        const result = await productModel.exclude(id);
+        expect(result).to.include.all.keys('affectedRows');
+      });
+      it('As propriedade "affectedRows" possui valor 1', async () => {
+        const { affectedRows } = await productModel.exclude(id);
+        expect(affectedRows).to.be.equal(1);
+      });
+    })
+  });
 });
