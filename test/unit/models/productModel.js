@@ -229,4 +229,61 @@ describe('Product Models', () => {
       });
     });
   });
+
+  describe('Update - Atualiza um produto cadastrado no banco', () => {
+    const args = { id: 1, name: 'produto', quantity: 100 };
+    describe('Quando não é possível atualizar o produto', () => {
+      before(() => {
+        const result = [{ affectedRows: 0, changedRows: 0 }];
+        sinon.stub(connection, 'execute').resolves(result);
+      });
+      after(() => {
+        connection.execute.restore();
+      });
+
+      it('Retorna um objeto', async () => {
+        const result = await productModel.update(args);
+        expect(result).to.be.an('object');
+      });
+      it('O objeto possui as propriedades certas', async () => {
+        const result = await productModel.update(args);
+        expect(result).to.include.all.keys('affectedRows', 'changedRows');
+      });
+      it('As propriedade "affectedRows" possui valor 0', async () => {
+        const { affectedRows } = await productModel.update(args);
+        expect(affectedRows).to.be.equal(0);
+      });
+      it('As propriedade "changedRows" possui valor 0', async () => {
+        const { changedRows } = await productModel.update(args);
+        expect(changedRows).to.be.equal(0);
+      });
+    });
+
+    describe('Quando o produto é atualizado com sucesso', () => {
+      before(() => {
+        const result = [{ affectedRows: 1, changedRows: 1 }];
+        sinon.stub(connection, 'execute').resolves(result);
+      });
+      after(() => {
+        connection.execute.restore();
+      });
+
+      it('Retorna um objeto', async () => {
+        const result = await productModel.update(args);
+        expect(result).to.be.an('object');
+      });
+      it('O objeto possui as propriedades certas', async () => {
+        const result = await productModel.update(args);
+        expect(result).to.include.all.keys('affectedRows', 'changedRows');
+      });
+      it('As propriedade "affectedRows" possui valor 1', async () => {
+        const { affectedRows } = await productModel.update(args);
+        expect(affectedRows).to.be.equal(1);
+      });
+      it('As propriedade "changedRows" possui valor 1', async () => {
+        const { changedRows } = await productModel.update(args);
+        expect(changedRows).to.be.equal(1);
+      });
+    });
+  });
 });
