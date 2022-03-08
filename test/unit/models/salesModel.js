@@ -162,4 +162,90 @@ describe('Sales Model', () =>{
       });
     });
   });
+
+  describe('CreateItems - Cadastra a lista de items relacionado à uma venda', () => {
+    describe('Quando o id da venda é inválido', () => {
+      const saleId = undefined;
+      const itemsSold = [{ "productId": 1, "quantity": 3 }];
+      it('Retorna "null"', async () => {
+        const result = await salesModel.createItems(saleId, itemsSold);
+        expect(result).to.be.null;
+      });
+    });
+
+    describe('Quando o id é válido e apenas um item é cadastrado', () => {
+      const saleId = 1;
+      const itemsList = [{ "productId": 1, "quantity": 3 }];
+      it('Retorna um objeto', async () => {
+        const result = await salesModel.createItems(saleId, itemsList);
+        expect(result).to.be.an('object');
+      });
+      it('O objeto retornado possui as propriedades certas', async () => {
+        const result = await salesModel.createItems(saleId, itemsList);
+        expect(result).to.include.all.keys('id', 'itemsSold');
+      });
+      it('Ao valor de id é igual ao saleId passado por parâmetro', async () => {
+        const { id } = await salesModel.createItems(saleId, itemsList);
+        expect(id).to.be.equal(saleId);
+      });
+      it('A propriedade itemSold é um array', async () => {
+        const { itemsSold } = await salesModel.createItems(saleId, itemsList);
+        expect(itemsSold).to.be.an('array');
+      });
+      it('itemSold é um array de objetos', async () => {
+        const { itemsSold: [item] } = await salesModel.createItems(saleId, itemsList);
+        expect(item).to.be.an('object');
+      });
+      it('Os items em itemsSold possui as propriedades certas', async () => {
+        const { itemsSold: [item] } = await salesModel.createItems(saleId, itemsList);
+        expect(item).to.include.all.keys('productId', 'quantity');
+      });
+      it('itemSold possui apenas um elemento', async () => {
+        const { itemsSold } = await salesModel.createItems(saleId, itemsList);
+        expect(itemsSold.length).to.be.equal(1);
+      });
+    });
+
+    describe('Quando o id é válido e vários items são cadastrados', () => {
+      const saleId = 1;
+      const itemsList = [
+        {
+          "productId": 1,
+          "quantity": 2
+        },
+        {
+          "productId": 2,
+          "quantity": 5
+        }
+      ];
+      it('Retorna um objeto', async () => {
+        const result = await salesModel.createItems(saleId, itemsList);
+        expect(result).to.be.an('object');
+      });
+      it('O objeto retornado possui as propriedades certas', async () => {
+        const result = await salesModel.createItems(saleId, itemsList);
+        expect(result).to.include.all.keys('id', 'itemsSold');
+      });
+      it('Ao valor de id é igual ao saleId passado por parâmetro', async () => {
+        const { id } = await salesModel.createItems(saleId, itemsList);
+        expect(id).to.be.equal(saleId);
+      });
+      it('A propriedade itemSold é um array', async () => {
+        const { itemsSold } = await salesModel.createItems(saleId, itemsList);
+        expect(itemsSold).to.be.an('array');
+      });
+      it('itemSold é um array de objetos', async () => {
+        const { itemsSold: [item] } = await salesModel.createItems(saleId, itemsList);
+        expect(item).to.be.an('object');
+      });
+      it('Os items em itemsSold possui as propriedades certas', async () => {
+        const { itemsSold: [item] } = await salesModel.createItems(saleId, itemsList);
+        expect(item).to.include.all.keys('productId', 'quantity');
+      });
+      it('itemSold possui mais de um item', async () => {
+        const { itemsSold } = await salesModel.createItems(saleId, itemsList);
+        expect(itemsSold.length).to.be.greaterThan(1);
+      });
+    });
+  });
 });
