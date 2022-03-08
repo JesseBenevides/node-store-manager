@@ -5,7 +5,7 @@ const productController = require('../../../controllers/productController');
 const productService = require('../../../services/productService');
 
 
-describe.skip('Product Controller', () => {
+describe('Product Controller', () => {
   const request = {};
   const response = {};
   let next = () => {};

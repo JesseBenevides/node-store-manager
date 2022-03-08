@@ -4,7 +4,7 @@ const { expect } = require('chai');
 const productService = require('../../../services/productService');
 const productModel = require('../../../models/productModel');
 
-describe.skip('Product Services', () => {
+describe('Product Services', () => {
   describe('GetAll - Busca todos os produtos', () => {
     describe('Quando não há produtos cadastrados', () => {
       before(() => {
