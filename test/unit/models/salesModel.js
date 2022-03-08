@@ -163,7 +163,7 @@ describe('Sales Model', () =>{
     });
   });
 
-  describe('CreateItems - Cadastra a lista de items relacionado à uma venda', () => {
+  describe('CreateItems - Cadastra uma lista de items relacionado a uma venda', () => {
     describe('Quando o id da venda é inválido', () => {
       const saleId = undefined;
       const itemsSold = [{ "productId": 1, "quantity": 3 }];
@@ -245,6 +245,39 @@ describe('Sales Model', () =>{
       it('itemSold possui mais de um item', async () => {
         const { itemsSold } = await salesModel.createItems(saleId, itemsList);
         expect(itemsSold.length).to.be.greaterThan(1);
+      });
+    });
+  });
+
+  describe('ExcludeItems - Deleta todos os items relacionados a uma venda', () => {
+    const saleId = 1;
+    describe('Quando nenhum item é excluído', () => {
+      before(() => {
+        const result = [{ affectedRows: 0 }];
+        sinon.stub(connection, 'execute').resolves(result);
+      });
+      after(() => {
+        connection.execute.restore();
+      });
+
+      it('Retorna false', async () => {
+        const result = await salesModel.excludeItems(saleId);
+        expect(result).to.be.false;
+      });
+    });
+
+    describe('Um ou mais items são excluídos', () => {
+      before(() => {
+        const result = [{ affectedRows: 3 }];
+        sinon.stub(connection, 'execute').resolves(result);
+      });
+      after(() => {
+        connection.execute.restore();
+      });
+
+      it('Retorna true', async () => {
+        const result = await salesModel.excludeItems(saleId);
+        expect(result).to.be.true;
       });
     });
   });
