@@ -1,4 +1,5 @@
 const express = require('express');
+const rescue = require('express-rescue');
 const salesController = require('../controllers/salesController');
 const salesValidation = require('../middlewares/salesValidation');
 
@@ -6,29 +7,29 @@ const salesRouter = express.Router();
 
 salesRouter.get(
   '/',
-  salesController.getAll,
+  rescue(salesController.getAll),
 );
 
 salesRouter.get(
   '/:id',
-  salesController.findById,
+  rescue(salesController.findById),
 );
 
 salesRouter.post(
   '/',
   salesValidation,
-  salesController.create,
+  rescue(salesController.create),
 );
 
 salesRouter.put(
   '/:id',
   salesValidation,
-  salesController.update,
+  rescue(salesController.update),
 );
 
 salesRouter.delete(
   '/:id',
-  salesController.exclude,
+  rescue(salesController.exclude),
 );
 
 module.exports = salesRouter;

@@ -1,4 +1,5 @@
 const express = require('express');
+const rescue = require('express-rescue');
 const productController = require('../controllers/productController');
 const productValidation = require('../middlewares/productValidation');
 
@@ -6,7 +7,7 @@ const productRouter = express.Router();
 
 productRouter.get(
   '/',
-  productController.getAll,
+  rescue(productController.getAll),
 );
 
 productRouter.get(
@@ -17,18 +18,18 @@ productRouter.get(
 productRouter.post(
   '/',
   productValidation,
-  productController.create,
+  rescue(productController.create),
 );
 
 productRouter.put(
   '/:id',
   productValidation,
-  productController.update,
+  rescue(productController.update),
 );
 
 productRouter.delete(
   '/:id',
-  productController.exclude,
+  rescue(productController.exclude),
 );
 
 module.exports = productRouter;
