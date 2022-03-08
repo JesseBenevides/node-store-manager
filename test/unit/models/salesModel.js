@@ -281,4 +281,37 @@ describe('Sales Model', () =>{
       });
     });
   });
+
+  describe('Exclude - Deleta uma venda do banco', () => {
+    const saleId = 1;
+    describe('Quando não é possível deletar a venda', () => {
+      before(() => {
+        const result = [{ affectedRows: 0 }];
+        sinon.stub(connection, 'execute').resolves(result);
+      });
+      after(() => {
+        connection.execute.restore();
+      });
+
+      it('Retorna false', async () => {
+        const result = await salesModel.exclude(saleId);
+        expect(result).to.be.false;
+      });
+    });
+
+    describe('Quando a venda é deletada com sucesso', () => {
+      before(() => {
+        const result = [{ affectedRows: 1 }];
+        sinon.stub(connection, 'execute').resolves(result);
+      });
+      after(() => {
+        connection.execute.restore();
+      });
+
+      it('Retorna true', async () => {
+        const result = await salesModel.exclude(saleId);
+        expect(result).to.be.true;
+      });
+    });
+  });
 });
