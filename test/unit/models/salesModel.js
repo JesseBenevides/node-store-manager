@@ -127,4 +127,39 @@ describe('Sales Model', () =>{
       });
     });
   });
+
+  describe('CreateSale - Cadastra uma nova venda no banco', () => {
+    describe('Quando a criação da venda falha', () => {
+      before(() => {
+        const result = [{ affectedRows: 0, insertId: undefined }];
+        sinon.stub(connection, 'execute').resolves(result);
+      });
+      after(() => {
+        connection.execute.restore();
+      });
+
+      it('Retorna "undefined"', async () => {
+        const result = await salesModel.createSale()
+        expect(result).to.be.undefined;
+      });
+    });
+    describe('Quando a venda é criada com sucesso', () => {
+      const queryResponse = [{ affectedRows: 1, insertId: 4 }];
+      before(() => {
+        sinon.stub(connection, 'execute').resolves(queryResponse);
+      });
+      after(() => {
+        connection.execute.restore();
+      });
+
+      it('Retona um número', async () => {
+        const result = await salesModel.createSale()
+        expect(result).to.be.a('number');
+      });
+      it('O valor retornado é o insertId que a execução da query retornou', async () => {
+        const result = await salesModel.createSale()
+        expect(result).to.be.equal(queryResponse[0].insertId);
+      });
+    });
+  });
 });
