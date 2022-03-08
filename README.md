@@ -111,7 +111,7 @@ Você deve utilizar o banco MySQL para a gestão de dados. Além disso, a API de
 ## Data de Entrega
 
   - Serão `3` dias de projeto.
-  - Data de entrega para avaliação final do projeto: `04/03/2022 14:00`.
+  - Data de entrega para avaliação final do projeto: `11/03/2022 14:00`.
 
 ---
 
@@ -536,7 +536,7 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 > :information_source: Para **Vendas**
 
-- O endpoint de produtos deve ser acessível através do caminho (`/sales`);
+- O endpoint de vendas deve ser acessível através do caminho (`/sales`);
 
 <details close>
   <summary>O que será validado</summary>
