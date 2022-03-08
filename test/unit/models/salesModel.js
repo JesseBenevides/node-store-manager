@@ -314,4 +314,50 @@ describe('Sales Model', () =>{
       });
     });
   });
+
+  describe('Update - atualiza os items de uma venda', () => {
+    describe('Quando a atualização é concluída', () => {
+      const saleId = 1;
+      const itemsList = [{ "productId": 1, "quantity": 3 }];
+
+      before(() => {
+        const createItemsResponse = { id: saleId, itemsSold: itemsList }
+        sinon.stub(salesModel, 'createItems').resolves(createItemsResponse);
+        sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+      });
+      after(() => {
+        salesModel.createItems.restore();
+        connection.execute.restore();
+      });
+      
+      it('Retorna um objeto', async () => {
+        const result = await salesModel.update(saleId, itemsList);
+        expect(result).to.be.an('object');
+      });
+      it('O objeto retornado possui as propriedades certas', async () => {
+        const result = await salesModel.update(saleId, itemsList);
+        expect(result).to.include.all.keys('saleId', 'itemUpdated');
+      });
+      it('O id do retorno é igual ao saleId passado por parâmetro', async () => {
+        const result = await salesModel.update(saleId, itemsList);
+        expect(result.saleId).to.be.equal(saleId);
+      });
+      it('A propriedade itemUpdated é um array', async () => {
+        const { itemUpdated } = await salesModel.update(saleId, itemsList);
+        expect(itemUpdated).to.be.an('array');
+      });
+      it('itemUpdated é um array de objetos', async () => {
+        const { itemUpdated: [item] } = await salesModel.update(saleId, itemsList);
+        expect(item).to.be.an('object');
+      });
+      it('Os items em itemUpdated possui as propriedades certas', async () => {
+        const { itemUpdated: [item] } = await salesModel.update(saleId, itemsList);
+        expect(item).to.include.all.keys('productId', 'quantity');
+      });
+      it('itemUpdated tem a mesma quantidade items que a lista atualizada', async () => {
+        const { itemUpdated } = await salesModel.update(saleId, itemsList);
+        expect(itemUpdated.length).to.be.equal(itemsList.length);
+      });
+    });
+  });
 });
