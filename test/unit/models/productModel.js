@@ -181,4 +181,52 @@ describe('Product Models', () => {
       });
     });
   });
+
+  describe('Create - Cria um novo produto no banco', () => {
+    const [name, quantity] = ['produto', 100];
+    describe('Quando o produto não é criado', () => {
+      const result = [{ affectedRows: 0, insertId: undefined }];
+      before(() => {
+        sinon.stub(connection, 'execute').resolves(result);
+      });
+      after(() => {
+        connection.execute.restore();
+      });
+
+      it('Retona um objeto', async () => {
+        const result = await productModel.create(name, quantity)
+        expect(result).to.be.an('object');
+      });
+      it('O objeto possui as propriedades certas', async () => {
+        const result = await productModel.create(name, quantity)
+        expect(result).to.include.all.keys('id', 'quantity', 'name');
+      });
+      it('A propriedade id possui o valor "undefined"', async () => {
+        const { id } = await productModel.create(name, quantity)
+        expect(id).to.be.undefined;
+      });
+    });
+    describe('Quando o produto é criado com sucesso', () => {
+      const result = [{ affectedRows: 1, insertId: 4 }];
+      before(() => {
+        sinon.stub(connection, 'execute').resolves(result);
+      });
+      after(() => {
+        connection.execute.restore();
+      });
+
+      it('Retona um objeto', async () => {
+        const result = await productModel.create(name, quantity)
+        expect(result).to.be.an('object');
+      });
+      it('O objeto possui as propriedades certas', async () => {
+        const result = await productModel.create(name, quantity)
+        expect(result).to.include.all.keys('id', 'quantity', 'name');
+      });
+      it('A propriedade id é um valor numérico', async () => {
+        const { id } = await productModel.create(name, quantity)
+        expect(id).to.be.a('number');
+      });
+    });
+  });
 });
