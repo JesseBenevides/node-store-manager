@@ -92,4 +92,84 @@ describe('Product Services', () => {
     });
   });
   
+  describe('FindById - Busca um produto pelo id', () => {
+    const id = 1;
+    describe('Quando o produto não é encontrado', () => {
+      const expectedResult = { status: 404, message: 'Product not found' };
+      before(() => {
+        const modelResponse = [];
+        sinon.stub(productModel, 'findById').resolves(modelResponse);
+      });
+      after(() => {
+        productModel.findById.restore();
+      });
+  
+      it('Retorna um objeto', async () => {
+        const result = await productService.findById(1);
+        expect(result).to.be.an('object');
+      });
+  
+      it('O objeto possui as propriedades "status" e "message"', async () => {
+        const result = await productService.findById(id);
+        expect(result).to.include.all.keys('status', 'message');
+      });
+      it('A propriedade "message" é uma string', async () => {
+        const { message } = await productService.findById(id);
+        expect(message).to.be.an('string');
+      });
+      it('A propriedade "message" possui o valor esperado', async () => {
+        const { message } = await productService.findById(id);
+        expect(message).to.be.equal(expectedResult.message);
+      });
+      it('A propriedade "status" é um número', async () => {
+        const { status } = await productService.findById(id);
+        expect(status).to.be.a('number');
+      });
+      it('A propriedade "status" possui o valor esperado', async () => {
+        const { status } = await productService.findById(id);
+        expect(status).to.be.equal(expectedResult.status);
+      });
+    });
+
+    describe('Quando o produto é encontrado', () => {
+      const modelResponse = [{
+        "id": 1,
+        "name": "produto A",
+        "quantity": 10
+      }];
+      const expectedResult = { status: 200, data: modelResponse[0] };
+      before(() => {
+        sinon.stub(productModel, 'findById').resolves(modelResponse);
+      });
+      after(() => {
+        productModel.findById.restore();
+      });
+  
+      it('Retorna um objeto', async () => {
+        const result = await productService.findById(1);
+        expect(result).to.be.an('object');
+      });
+  
+      it('O objeto possui as propriedades "status" e "data"', async () => {
+        const result = await productService.findById(id);
+        expect(result).to.include.all.keys('status', 'data');
+      });
+      it('A propriedade "data" é um objeto', async () => {
+        const { data } = await productService.findById(id);
+        expect(data).to.be.an('object');
+      });
+      it('A propriedade "data" possui o valor esperado', async () => {
+        const { data } = await productService.findById(id);
+        expect(data).to.be.equal(expectedResult.data);
+      });
+      it('A propriedade "status" é um número', async () => {
+        const { status } = await productService.findById(id);
+        expect(status).to.be.a('number');
+      });
+      it('A propriedade "status" possui o valor esperado', async () => {
+        const { status } = await productService.findById(id);
+        expect(status).to.be.equal(expectedResult.status);
+      });
+    });
+  });
 });
