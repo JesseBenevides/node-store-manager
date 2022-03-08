@@ -292,7 +292,7 @@ describe('Product Models', () => {
     describe('Quando não é possível deletar um produto', () => {
       before(() => {
         const result = [{ affectedRows: 0 }];
-        sinon.stub(connection, 'execute');
+        sinon.stub(connection, 'execute').resolves(result);
       });
       after(() => {
         connection.execute.restore();
