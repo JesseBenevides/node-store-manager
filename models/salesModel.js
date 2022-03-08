@@ -73,4 +73,5 @@ module.exports = {
   createSale,
   update,
   exclude,
+  excludeItems,
 };
