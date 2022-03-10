@@ -1,4 +1,5 @@
 const salesModel = require('../models/salesModel');
+const { hasStock, decreaseStock, increaseStock } = require('../utils/stockHandle');
 
 const getAll = async () => {
   const sales = await salesModel.getAll();
@@ -16,6 +17,11 @@ const findById = async (id) => {
 };
 
 const create = async (itemList) => {
+  if (!await hasStock(itemList)) {
+    return { status: 422, message: 'Such amount is not permitted to sell' };
+  }
+  decreaseStock(itemList);
+
   const saleId = await salesModel.createSale();
   const data = await salesModel.createItems(saleId, itemList);
   return (data
@@ -45,6 +51,7 @@ const exclude = async (saleId) => {
     return { status: 404, message: 'Sale not found' };
   }
 
+  await increaseStock(saleId);
   const result = await salesModel.exclude(saleId);
   
   return (result
